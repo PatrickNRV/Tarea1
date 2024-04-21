@@ -32,7 +32,7 @@ void mostrarMenuPrincipal() {
 
   puts("1) Registrar paciente");
   puts("2) Asignar prioridad a paciente");
-  puts("3) Mostrar lista de espera");
+  puts("3) Mostrar lista por orden de llegada");
   puts("4) Atender al siguiente paciente");
   puts("5) Mostrar pacientes por prioridad");
   puts("6) Salir");
@@ -45,23 +45,23 @@ void registrar_paciente(List *pacientes) {
 
   // Crear un nuevo paciente
   Persona *nuevo_paciente = malloc(sizeof(Persona));
-  
+
   if (nuevo_paciente == NULL) {
     printf("Error: No se pudo asignar memoria para el nuevo paciente.\n");
     return;
   }
   printf("Ingrese el nombre del paciente: ");
-  scanf("%s", nuevo_paciente->nombre);
-
+  scanf(" %30[^\n]", nuevo_paciente->nombre);
+  
   printf("Ingrese la edad del paciente: ");
   scanf("%d", &nuevo_paciente->edad);
 
   printf("Ingrese el síntoma del paciente: ");
-  scanf("%s", nuevo_paciente->sintoma);
-
+  scanf(" %150[^\n]", nuevo_paciente->sintoma);
+  
   // Asignar un ID único al paciente
   nuevo_paciente->id = ids++;
-  nuevo_paciente->prioridad = 0;
+  nuevo_paciente->prioridad = 1;
 
   // Agregar el paciente a la lista
   list_pushBack(pacientes, nuevo_paciente);
@@ -69,30 +69,38 @@ void registrar_paciente(List *pacientes) {
 
 //-------------------------------------------------------------------------------
 
-void asignar_prioridad(List *pacientes)
-{
+void asignar_prioridad(List *pacientes) {
   printf("Asignar prioridad a paciente\n");
-  printf("Lista de pacientes:\n");
+  printf("Lista de pacientes:\n\n");
 
   Persona *current = list_first(pacientes);
   size_t talla = 1;
 
-  while (current != NULL) {
-    printf("%zu) Nombre: %s, Edad: %d, Síntoma: %s, Prioridad: %d\n",
-           talla, current->nombre, current->edad, current->sintoma,
-           current->prioridad);
+  while (current != NULL) 
+  {
+    printf("%zu) Nombre: %s || Edad: %d || Síntoma: %s || ", talla,
+    current->nombre, current->edad, current->sintoma);
+
+    if (current->prioridad == 1)
+      printf("Prioridad: Baja\n");
+
+    else if (current->prioridad == 2)
+      printf("Prioridad: Media\n");
+
+    else if (current->prioridad == 3)
+      printf("Prioridad: Alta\n");
 
     current = list_next(pacientes);
     talla++;
   }
+  printf("\n");
 
   size_t seleccion;
   printf("Seleccione el número del paciente: ");
   scanf("%zu", &seleccion);
 
   // Verificar que la selección sea válida
-  if (seleccion < 1 || seleccion > talla - 1)
-  {
+  if (seleccion < 1 || seleccion > talla - 1) {
     printf("Selección inválida.\n");
     return;
   }
@@ -107,15 +115,19 @@ void asignar_prioridad(List *pacientes)
   }
 
   int prioridad;
-  printf("Ingrese la prioridad del paciente (0-2): ");
+  printf("Ingrese la prioridad del paciente: \n");
+  printf("1) Baja\n");
+  printf("2) Media\n");
+  printf("3) Alta\n");
+  printf("Seleccione una opción: ");
+  
   scanf("%d", &prioridad);
 
-  if (prioridad < 0 || prioridad > 2)
-  {
+  if (prioridad < 1 || prioridad > 3) {
     printf("Prioridad inválida.\n");
     return;
   }
-  
+
   current->prioridad = prioridad;
   printf("Prioridad asignada al paciente %s.\n", current->nombre);
 }
@@ -123,21 +135,141 @@ void asignar_prioridad(List *pacientes)
 //-------------------------------------------------------------------------------
 
 void mostrar_lista_pacientes(List *pacientes) {
-  printf("Pacientes en espera: \n");
+  printf("Pacientes en espera: \n\n");
 
   Persona *current = list_first(pacientes);
 
   while (current != NULL) {
-    printf("Nombre: %s, Edad: %d, Síntoma: %s, Prioridad: %d\n",
-           current->nombre, current->edad, current->sintoma,
-           current->prioridad);
+    printf("Nombre: %s || Edad: %d || Síntoma: %s || ",
+      current->nombre, current->edad, current->sintoma);
 
+    if (current->prioridad == 1)
+      printf("Prioridad: Baja\n");
+
+    else if (current->prioridad == 2)
+      printf("Prioridad: Media\n");
+
+    else if (current->prioridad == 3)
+      printf("Prioridad: Alta\n");
+    
     current = list_next(pacientes);
+  }
+  printf("\n");
+}
+
+//-------------------------------------------------------------------------------
+
+void atender_paciente(List *pacientes) {
+  printf("Atender al siguiente paciente\n");
+  Persona *current = list_first(pacientes);
+  if (current == NULL)
+    printf("No hay pacientes en espera. La lista está vacía.\n");
+
+  else {
+    printf("Paciente a atender: %s\n", current->nombre);
+    list_popFront(pacientes);
   }
 }
 
 //-------------------------------------------------------------------------------
 
+
+void mostrar_pacientes_por_prioridad(List *pacientes){
+  printf("\nPacientes por prioridad \n");
+  printf("1) Baja\n");
+  printf("2) Media\n");
+  printf("3) Alta\n\n");
+  
+  Persona *current = list_first(pacientes);
+  int prioridad;
+  printf("Ingrese la prioridad a mostrar: ");
+  scanf("%d", &prioridad);
+  while (current != NULL)
+  {
+    if (current->prioridad == prioridad)
+    {
+      printf("\nNombre: %s || Edad: %d || Síntoma: %s || ",
+        current->nombre, current->edad, current->sintoma);
+
+        if (current->prioridad == 1)
+        {
+          printf("Prioridad: Baja\n");
+          current = list_next(pacientes);
+        }
+  
+        else if (current->prioridad == 2)
+        {
+          printf("Prioridad: Media\n");
+          current = list_next(pacientes);
+        }
+  
+        else if (current->prioridad == 3)
+        {
+          printf("Prioridad: Alta\n");
+          current = list_next(pacientes);
+        }
+    }
+    current = list_next(pacientes);
+  }
+  printf("\n");
+}
+
+//-------------------------------------------------------------------------------
+
+void mostrar_orden_de_prioridad(List *pacientes){
+  printf("Mostrar pacientes por orden de prioridad\n\n");
+
+  Persona *current;
+  for (int i = 3; i >= 1; i--)
+  {
+    current = list_first(pacientes);
+    while (current != NULL)
+    {
+      if (current->prioridad == i)
+      {
+        printf("Nombre: %s || Edad: %d || Síntoma: %s || ", current->nombre, current->edad, current->sintoma);
+
+        if (current->prioridad == 1)
+          printf("Prioridad: Baja\n");
+
+        else if (current->prioridad == 2)
+          printf("Prioridad: Media\n");
+
+        else if (current->prioridad == 3)
+          printf("Prioridad: Alta\n");
+      }
+      current = list_next(pacientes);
+    }
+  }
+}
+
+//-------------------------------------------------------------------------------
+
+
+void mostrar_prioridad(List *pacientes){
+  printf("\nMostrar pacientes por prioridad\n\n");
+  char opcion1;
+
+  printf("1) Mostrar pacientes de una sola prioridad\n");
+  printf("2) Mostrar pacientes por orden de prioridad\n\n");
+
+  printf("Ingrese su opción: ");
+  scanf(" %c", &opcion1);
+
+  switch (opcion1) {
+  case '1':
+    mostrar_pacientes_por_prioridad(pacientes);
+    break;
+  case '2':
+    mostrar_orden_de_prioridad(pacientes);
+    break;
+  default:
+    puts("Opción no válida. Por favor, intente de nuevo.");
+  }
+}
+
+  //-------------------------------------------------------------------------------
+  
 int main() {
   char opcion;
   List *pacientes = list_create();
@@ -158,10 +290,10 @@ int main() {
       mostrar_lista_pacientes(pacientes);
       break;
     case '4':
-      // Lógica para atender al siguiente paciente
+      atender_paciente(pacientes);
       break;
     case '5':
-      // Lógica para mostrar pacientes por prioridad
+      mostrar_prioridad(pacientes);
       break;
     case '6':
       puts("Saliendo del sistema de gestión hospitalaria...");
