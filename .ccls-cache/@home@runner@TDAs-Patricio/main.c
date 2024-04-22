@@ -51,14 +51,14 @@ void registrar_paciente(List *pacientes) {
     return;
   }
   printf("Ingrese el nombre del paciente: ");
-  scanf(" %30[^\n]", nuevo_paciente->nombre);
-  
+  scanf(" %50[^\n]", nuevo_paciente->nombre);
+
   printf("Ingrese la edad del paciente: ");
   scanf("%d", &nuevo_paciente->edad);
 
   printf("Ingrese el síntoma del paciente: ");
   scanf(" %150[^\n]", nuevo_paciente->sintoma);
-  
+
   // Asignar un ID único al paciente
   nuevo_paciente->id = ids++;
   nuevo_paciente->prioridad = 1;
@@ -120,7 +120,7 @@ void asignar_prioridad(List *pacientes) {
   printf("2) Media\n");
   printf("3) Alta\n");
   printf("Seleccione una opción: ");
-  
+
   scanf("%d", &prioridad);
 
   if (prioridad < 1 || prioridad > 3) {
@@ -151,7 +151,7 @@ void mostrar_lista_pacientes(List *pacientes) {
 
     else if (current->prioridad == 3)
       printf("Prioridad: Alta\n");
-    
+
     current = list_next(pacientes);
   }
   printf("\n");
@@ -170,16 +170,14 @@ void atender_paciente(List *pacientes) {
     list_popFront(pacientes);
   }
 }
-
 //-------------------------------------------------------------------------------
-
 
 void mostrar_pacientes_por_prioridad(List *pacientes){
   printf("\nPacientes por prioridad \n");
   printf("1) Baja\n");
   printf("2) Media\n");
   printf("3) Alta\n\n");
-  
+
   Persona *current = list_first(pacientes);
   int prioridad;
   printf("Ingrese la prioridad a mostrar: ");
@@ -196,13 +194,13 @@ void mostrar_pacientes_por_prioridad(List *pacientes){
           printf("Prioridad: Baja\n");
           current = list_next(pacientes);
         }
-  
+
         else if (current->prioridad == 2)
         {
           printf("Prioridad: Media\n");
           current = list_next(pacientes);
         }
-  
+
         else if (current->prioridad == 3)
         {
           printf("Prioridad: Alta\n");
@@ -245,7 +243,6 @@ void mostrar_orden_de_prioridad(List *pacientes){
 
 //-------------------------------------------------------------------------------
 
-
 void mostrar_prioridad(List *pacientes){
   printf("\nMostrar pacientes por prioridad\n\n");
   char opcion1;
@@ -267,9 +264,8 @@ void mostrar_prioridad(List *pacientes){
     puts("Opción no válida. Por favor, intente de nuevo.");
   }
 }
-
   //-------------------------------------------------------------------------------
-  
+
 int main() {
   char opcion;
   List *pacientes = list_create();

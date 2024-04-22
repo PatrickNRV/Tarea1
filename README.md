@@ -1,4 +1,3 @@
-En este *repl* puedes encontrar varios ejemplos que te pueden ayudar con las tareas de estructura.
 
 ## Código de Ejemplo (main)
 Para ejecutar el main primero debemos compilar (en la carpeta raíz)
@@ -11,23 +10,54 @@ Y luego ejecutar:
 ./main
 ````
 
-## TDAs
-En la carpeta `tdas` se encuentran implementados distintos TDAs que puedes utilizar (lista, pila, cola, cola con prioridad y mapas). 
+## Requerimentos
+Es recomendable extender la página del `shell` para una mejor visualización de las listas, además de ingresar un nombre con menos de 50 caracteres y síntomas con menos de 150 caracteres.
 
-Las implementaciones no son las más eficientes (todas usan como estructura de datos una **lista enlazada**), por lo que puedes reemplazarlas por las que has realizado en los labs.
+## CONTRA
+La mayor contra de este programa es que no se puede atender en orden de prioridad, solamente en orden de llegada.
 
-## Otros códigos (en carpeta examples)
-Para ejecutar los distintos ejemplos que hay en la carpeta `examples`, primero debes compilarlos. Si estamos en la carpeta raíz:
-````
-gcc tdas/*.c examples/example2_menu.c -Wno-unused-result -o example
-````
-Y luego ejecutarlos:
-````
-./example
+También tiene complicaciones sobre la hora de llegada, pero se imprime bien.
+
+## Funcionamiento
+Este código utiliza una lista enlazada simple como estructura principal, gracias al struct Persona se recopilan los siguientes datos:
+
+````c
+typedef struct {
+  char nombre[100];
+  int edad;
+  int id;
+  char sintoma[200];
+  int prioridad;
+} Persona;
 ````
 
-Se incluyen los siguientes ejemplos:
-* `example1_list`: Uso del TDA Lista, inserción y eliminación de elementos.
-* `example2_menu`: Ejemplo de menú con submenús.
-* `example3_readcsv`: Ejemplo de lectura desde un archivo csv y almacenamiento en datos estructurados.
-* `example4_map`: Ejemplo de uso del TDA mapa.
+## Funciones
+Estas son las funciones usadas en el programa:
+
+````c
+//Ingresar un nuevo paciente a la lista
+void registrar_paciente(List *pacientes) {
+
+//Se le asigna prioridad a un paciente (default: Baja)
+void asignar_prioridad(List *pacientes) {
+
+//Se muestra la lista de pacientes por orden de llegada (sin importar prioridad)
+void mostrar_lista_pacientes(List *pacientes) {
+
+//Se atiende al primer paciente ingresado (sin importar prioridad)
+void atender_paciente(List *pacientes) {
+
+//Se ingresa una prioridad y muestra todos los pacientes con esa prioridad
+void mostrar_pacientes_por_prioridad(List *pacientes){
+
+//Se muestran todos los pacientes ordenados por prioridad
+void mostrar_orden_de_prioridad(List *pacientes){
+
+//Función que hace de menú para las dos funciones anteriores
+void mostrar_prioridad(List *pacientes){
+
+````
+
+
+
+

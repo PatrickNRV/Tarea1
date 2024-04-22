@@ -14,4 +14,4 @@ void *queue_front(Queue *queue) { return list_first(queue); }
 
 void queue_clean(Queue *queue) { list_clean(queue); }
 
-#endif /* QUEUE_H */
+#endif /* QUEUE_H */  
